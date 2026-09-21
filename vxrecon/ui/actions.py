@@ -442,6 +442,25 @@ _ACTION_MODULES: dict[str, dict[str, set[str] | None]] = {
 def _run_recon(action: str, ctx: RunContext) -> int:
     target = _require_target(ctx)
     ui = _reporter(ctx)
+
+    # Validate the target shape up-front for a clear, fast failure.
+    from vxrecon.utils.validators import classify_target
+
+    kind = classify_target(target)
+    if kind == "unknown":
+        ui.error(f"'{target}' is not a valid domain, URL or IP address")
+        if ctx.json:
+            _emit_json({"target": target, "action": action, "ok": False, "error": "invalid target"})
+        return 3
+
+    # Some actions are domain-oriented; an IP target cannot produce DNS/RDAP
+    # domain facts, so explain rather than run a pointless scan.
+    if kind == "ip" and action in {"dns", "domain", "email", "subdomains"}:
+        ui.error(f"'{target}' is an IP address; the '{action}' action expects a domain")
+        if ctx.json:
+            _emit_json({"target": target, "action": action, "ok": False, "error": "domain required"})
+        return 3
+
     ui.section(f"{action}: {target}")
 
     pipeline = Pipeline(DEFAULT_REGISTRY, ctx)

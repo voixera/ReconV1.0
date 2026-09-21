@@ -42,7 +42,10 @@ class TerminalReporter(BaseReporter):
         for result in results:
             module = result.get("module", "?")
             findings = result.get("findings", [])
-            if not findings:
+            errors = result.get("errors", [])
+            notes = result.get("notes", [])
+            # Skip only when there is genuinely nothing to show.
+            if not findings and not errors and not notes:
                 continue
             title = _MODULE_TITLES.get(module, module.upper())
             lines.append("")
@@ -50,9 +53,9 @@ class TerminalReporter(BaseReporter):
             lines.append(theme.divider(len(title)))
             for finding in findings:
                 lines.extend(self._render_finding(finding, theme))
-            for error in result.get("errors", []):
+            for error in errors:
                 lines.append(theme.glyph("warn", str(error)))
-            for note in result.get("notes", []):
+            for note in notes:
                 lines.append(theme.glyph("skip", str(note)))
 
         graph = data.get("graph")
