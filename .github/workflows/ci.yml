@@ -34,18 +34,7 @@ jobs:
           python -m pip install -e ".[dev]"
 
       - name: Run tests (offline)
-        shell: bash
-        run: |
-          set -o pipefail
-          python -m pytest tests -ra --tb=short 2>&1 | tee pytest-output.txt || {
-            # Surface the failing test names as an annotation so they are
-            # visible without downloading logs.
-            echo "::error::pytest failed. Summary:"
-            grep -E "FAILED|ERROR|assert|AssertionError" pytest-output.txt | head -n 40 | while IFS= read -r line; do
-              echo "::error::$line"
-            done
-            exit 1
-          }
+        run: python -m pytest tests -q
 
       - name: CLI smoke test
         run: |

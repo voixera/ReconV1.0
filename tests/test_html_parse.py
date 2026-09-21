@@ -57,6 +57,7 @@ def test_parse_page_captures_framework_attrs() -> None:
 
 
 def test_parse_page_handles_malformed_html() -> None:
+    # Must not raise, and the title must not absorb subsequent markup.
     facts = parse_page("<html><title>Broken<div><span></html>")
     assert facts.title == "Broken"
 

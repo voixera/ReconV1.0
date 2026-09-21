@@ -60,6 +60,12 @@ class _VXParser(HTMLParser):
     # -- tags ------------------------------------------------------------
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        # A new element inside a still-open <title> means the title was never
+        # closed (malformed HTML). Titles cannot contain elements, so stop
+        # capturing here to avoid leaking markup into the title text.
+        if self._in_title and tag != "title":
+            self._in_title = False
+
         attr_map = {k.lower(): (v or "") for k, v in attrs}
         # Record raw attribute strings for framework markers (data-reactroot etc.)
         for key, value in attr_map.items():
