@@ -1,0 +1,10 @@
+# VXRecon core has NO required runtime dependencies.
+# Everything in the standard library is used by default.
+#
+# Optional, feature-enriching extras are listed in pyproject.toml under
+# [project.optional-dependencies]. Install them with, for example:
+#
+#     pip install vxrecon[dns,image,html,crypto]
+#
+# This file is intentionally empty of hard requirements so a bare Python
+# installation can run the full core.

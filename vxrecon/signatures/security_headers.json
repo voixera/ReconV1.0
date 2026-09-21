@@ -1,0 +1,27 @@
+{
+  "_comment": [
+    "Security header expectations for the HTTP behaviour fingerprint.",
+    "Presence is reported as evidence; absence is a MISSING signal, never a",
+    "vulnerability claim. 'severity' is informational."
+  ],
+  "headers": [
+    { "name": "Strict-Transport-Security", "label": "HSTS", "severity": "medium" },
+    { "name": "Content-Security-Policy", "label": "CSP", "severity": "medium" },
+    { "name": "X-Content-Type-Options", "label": "X-Content-Type-Options", "severity": "low" },
+    { "name": "X-Frame-Options", "label": "X-Frame-Options", "severity": "low" },
+    { "name": "Referrer-Policy", "label": "Referrer-Policy", "severity": "low" },
+    { "name": "Permissions-Policy", "label": "Permissions-Policy", "severity": "low" },
+    { "name": "Cross-Origin-Opener-Policy", "label": "COOP", "severity": "low" },
+    { "name": "Cross-Origin-Embedder-Policy", "label": "COEP", "severity": "low" }
+  ],
+  "informational_headers": [
+    "Server",
+    "X-Powered-By",
+    "Via",
+    "X-Cache",
+    "CF-Cache-Status",
+    "X-Generator",
+    "X-Drupal-Cache",
+    "X-AspNet-Version"
+  ]
+}

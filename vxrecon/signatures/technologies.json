@@ -1,0 +1,176 @@
+{
+  "_comment": [
+    "Technology fingerprints for the VXRecon confidence engine.",
+    "Every rule produces EVIDENCE. A match NEVER proves ownership or even",
+    "certainty - it supports a confidence level. 'weight' contributes to the",
+    "confidence score: >=2.0 => HIGH, >=1.0 => MEDIUM, else LOW.",
+    "Fields:",
+    "  name, category",
+    "  rules: list of {type, pattern, weight, note}",
+    "  type: header | header_value | cookie | meta | script | link | body |",
+    "        html_attr | path | title",
+    "  pattern: case-insensitive regex",
+    "  weight: contribution to the score"
+  ],
+  "technologies": [
+    {
+      "name": "Next.js",
+      "category": "framework",
+      "rules": [
+        { "type": "html_attr", "pattern": "id=\"__next\"", "weight": 1.0, "note": "Next.js root element" },
+        { "type": "body", "pattern": "__NEXT_DATA__", "weight": 1.5, "note": "NEXT_DATA hydration payload" },
+        { "type": "path", "pattern": "/_next/", "weight": 1.5, "note": "Next.js asset prefix /_next/" },
+        { "type": "header", "pattern": "x-nextjs", "weight": 1.0, "note": "Next.js response header" }
+      ]
+    },
+    {
+      "name": "React",
+      "category": "frontend",
+      "rules": [
+        { "type": "script", "pattern": "react(\\.production\\.min)?\\.js", "weight": 1.5, "note": "React runtime reference" },
+        { "type": "html_attr", "pattern": "data-reactroot", "weight": 1.0, "note": "React DOM marker" },
+        { "type": "body", "pattern": "data-reactroot", "weight": 1.0, "note": "React DOM marker in body" }
+      ]
+    },
+    {
+      "name": "Vue.js",
+      "category": "frontend",
+      "rules": [
+        { "type": "script", "pattern": "vue(\\.runtime|\\.min)?\\.js", "weight": 1.5, "note": "Vue runtime reference" },
+        { "type": "html_attr", "pattern": "data-v-[0-9a-f]{6,}", "weight": 1.0, "note": "Vue scoped attribute" },
+        { "type": "html_attr", "pattern": "v-(if|for|bind|on|model)", "weight": 0.8, "note": "Vue directive" }
+      ]
+    },
+    {
+      "name": "Angular",
+      "category": "frontend",
+      "rules": [
+        { "type": "html_attr", "pattern": "ng-version", "weight": 1.5, "note": "Angular version marker" },
+        { "type": "script", "pattern": "(runtime|polyfills|main)\\.[0-9a-f]+\\.js", "weight": 0.6, "note": "Angular CLI bundle pattern" },
+        { "type": "html_attr", "pattern": "_ngcontent", "weight": 1.0, "note": "Angular content attribute" }
+      ]
+    },
+    {
+      "name": "jQuery",
+      "category": "library",
+      "rules": [
+        { "type": "script", "pattern": "jquery(-[0-9.]+)?(\\.min)?\\.js", "weight": 1.5, "note": "jQuery script reference" }
+      ]
+    },
+    {
+      "name": "Bootstrap",
+      "category": "css",
+      "rules": [
+        { "type": "link", "pattern": "bootstrap(\\.min)?\\.css", "weight": 1.5, "note": "Bootstrap stylesheet" },
+        { "type": "script", "pattern": "bootstrap(\\.bundle)?(\\.min)?\\.js", "weight": 1.0, "note": "Bootstrap script" }
+      ]
+    },
+    {
+      "name": "Tailwind CSS",
+      "category": "css",
+      "rules": [
+        { "type": "html_attr", "pattern": "class=\"[^\"]*\\b(flex|grid)\\b[^\"]*\\b(items-(center|start|end)|justify-(center|between|around))\\b", "weight": 0.7, "note": "Tailwind layout utility combination" },
+        { "type": "html_attr", "pattern": "class=\"[^\"]*\\b(p[xytblr]?-\\d|m[xytblr]?-\\d|w-\\d|h-\\d|text-(xs|sm|base|lg|xl|\\d?xl))\\b[^\"]*\\b(rounded|shadow|bg-[a-z]+-\\d)\\b", "weight": 0.7, "note": "Tailwind spacing/color utility combination" }
+      ]
+    },
+    {
+      "name": "nginx",
+      "category": "server",
+      "rules": [
+        { "type": "header_value", "pattern": "^nginx", "weight": 2.0, "note": "Server header: nginx" }
+      ]
+    },
+    {
+      "name": "Apache",
+      "category": "server",
+      "rules": [
+        { "type": "header_value", "pattern": "^Apache", "weight": 2.0, "note": "Server header: Apache" }
+      ]
+    },
+    {
+      "name": "Microsoft IIS",
+      "category": "server",
+      "rules": [
+        { "type": "header_value", "pattern": "Microsoft-IIS", "weight": 2.0, "note": "Server header: Microsoft-IIS" }
+      ]
+    },
+    {
+      "name": "Cloudflare",
+      "category": "cdn",
+      "rules": [
+        { "type": "header", "pattern": "cf-ray", "weight": 2.0, "note": "Cloudflare cf-ray header" },
+        { "type": "header_value", "pattern": "cloudflare", "weight": 1.0, "note": "Server header mentions Cloudflare" }
+      ]
+    },
+    {
+      "name": "Amazon CloudFront",
+      "category": "cdn",
+      "rules": [
+        { "type": "header", "pattern": "x-amz-cf-id", "weight": 2.0, "note": "CloudFront x-amz-cf-id header" }
+      ]
+    },
+    {
+      "name": "Fastly",
+      "category": "cdn",
+      "rules": [
+        { "type": "header", "pattern": "x-served-by", "weight": 1.0, "note": "Fastly x-served-by header" },
+        { "type": "header_value", "pattern": "varnish", "weight": 0.8, "note": "Fastly/Varnish cache header" }
+      ]
+    },
+    {
+      "name": "WordPress",
+      "category": "cms",
+      "rules": [
+        { "type": "meta", "pattern": "generator\"[^>]*wordpress", "weight": 2.0, "note": "WordPress generator meta" },
+        { "type": "path", "pattern": "/wp-content/", "weight": 1.0, "note": "WordPress content path" },
+        { "type": "path", "pattern": "/wp-includes/", "weight": 1.0, "note": "WordPress includes path" }
+      ]
+    },
+    {
+      "name": "Drupal",
+      "category": "cms",
+      "rules": [
+        { "type": "meta", "pattern": "generator\"[^>]*drupal", "weight": 2.0, "note": "Drupal generator meta" },
+        { "type": "header", "pattern": "x-generator", "weight": 1.0, "note": "Drupal X-Generator header" }
+      ]
+    },
+    {
+      "name": "Shopify",
+      "category": "cms",
+      "rules": [
+        { "type": "header", "pattern": "x-shopify", "weight": 1.5, "note": "Shopify response header" },
+        { "type": "path", "pattern": "cdn\\.shopify\\.com", "weight": 1.5, "note": "Shopify CDN reference" }
+      ]
+    },
+    {
+      "name": "Google Analytics",
+      "category": "analytics",
+      "rules": [
+        { "type": "script", "pattern": "googletagmanager\\.com/gtag/js|google-analytics\\.com/analytics\\.js", "weight": 1.5, "note": "Google Analytics script" }
+      ]
+    },
+    {
+      "name": "Google Tag Manager",
+      "category": "analytics",
+      "rules": [
+        { "type": "script", "pattern": "googletagmanager\\.com/gtm\\.js", "weight": 1.5, "note": "GTM script" }
+      ]
+    },
+    {
+      "name": "PHP",
+      "category": "language",
+      "rules": [
+        { "type": "header", "pattern": "x-powered-by", "value_pattern": "php", "weight": 2.0, "note": "X-Powered-By: PHP" },
+        { "type": "cookie", "pattern": "PHPSESSID", "weight": 1.5, "note": "PHP session cookie" }
+      ]
+    },
+    {
+      "name": "ASP.NET",
+      "category": "framework",
+      "rules": [
+        { "type": "header", "pattern": "x-aspnet", "weight": 2.0, "note": "ASP.NET header" },
+        { "type": "cookie", "pattern": "ASP\\.NET_SessionId", "weight": 1.5, "note": "ASP.NET session cookie" }
+      ]
+    }
+  ]
+}

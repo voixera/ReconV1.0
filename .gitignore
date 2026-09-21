@@ -1,0 +1,22 @@
+# Ignore VXRecon local workspaces and build artifacts.
+.vxrecon/
+reports/
+cases/
+*.db
+*.db-wal
+*.db-shm
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/

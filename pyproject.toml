@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vxrecon"
+version = "1.0.0"
+description = "Advanced Passive OSINT & Digital Footprint Intelligence Framework"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "VXRecon Contributors" }]
+keywords = ["osint", "reconnaissance", "security", "passive", "footprint", "privacy"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Internet",
+]
+# Core has ZERO runtime dependencies. All extras are optional with graceful
+# fallbacks so VXRecon runs on a bare Python installation.
+dependencies = []
+
+[project.optional-dependencies]
+# Richer DNS (TXT/MX/CAA/DMARC) - stdlib socket cannot do these record types.
+dns = ["dnspython>=2.4"]
+# Image dimensions, EXIF and perceptual hashing.
+image = ["Pillow>=10.0"]
+# Robust HTML parsing (a stdlib html.parser fallback always exists).
+html = ["beautifulsoup4>=4.12"]
+# Full X.509 parsing (a ssl.getpeercert() fallback always exists).
+crypto = ["cryptography>=42.0"]
+full = ["dnspython>=2.4", "Pillow>=10.0", "beautifulsoup4>=4.12", "cryptography>=42.0"]
+dev = ["pytest>=7.4", "pytest-cov>=4.1"]
+
+[project.urls]
+Homepage = "https://github.com/vxrecon/vxrecon"
+Documentation = "https://github.com/vxrecon/vxrecon/tree/main/docs"
+Issues = "https://github.com/vxrecon/vxrecon/issues"
+
+[project.scripts]
+vxrecon = "vxrecon.ui.cli:main"
+
+[tool.setuptools]
+packages = [
+    "vxrecon",
+    "vxrecon.core",
+    "vxrecon.collectors",
+    "vxrecon.analyzers",
+    "vxrecon.correlators",
+    "vxrecon.database",
+    "vxrecon.reporters",
+    "vxrecon.ui",
+    "vxrecon.cases",
+    "vxrecon.utils",
+    "vxrecon.signatures",
+]
+
+[tool.setuptools.package-data]
+vxrecon = ["database/*.sql", "signatures/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.coverage.run]
+source = ["vxrecon"]
+
