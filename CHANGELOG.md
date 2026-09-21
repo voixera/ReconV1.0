@@ -8,17 +8,29 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-- DNS resolution now honours the configured `--timeout`, preventing false
-  failures from slow local resolvers.
-- Availability conditions (CT/RDAP unreachable, per-record DNS timeouts) are
-  reported as informational findings instead of marking the whole scan PARTIAL.
-  A scan is only PARTIAL/FAILED for genuine errors.
-- Offline mode marks network-dependent analyzers as SKIPPED rather than PARTIAL,
-  so `--offline` runs complete cleanly (exit 0).
+- **HTML `<title>` parsing on malformed markup.** `html.parser` treats
+  `<title>` as CDATA, so an unclosed title could swallow following markup into
+  the title text, and the chunking differed across Python versions/platforms
+  (failing CI on Linux and Python 3.13). Title capture now strips leaked markup
+  deterministically.
+- **Missing `vxrecon/cases` package and over-broad `.gitignore`.** The `cases/`
+  ignore rule also matched the source package `vxrecon/cases/`, so it was never
+  committed and `pip install -e .` failed with "package directory ... does not
+  exist". Workspace ignores are now anchored to the repository root.
+- **CI network-gateway guard** no longer false-positives on `urllib.parse`
+  (pure URL string handling, not a network capability).
+- **CLI error reporting.** Module errors/notes are now shown even when a module
+  produced no findings; invalid targets fail fast with a clear message and exit
+  code 3 instead of a misleading PARTIAL scan; domain actions reject IP targets
+  with an explanation.
+- DNS honours the configured `--timeout`; availability conditions (CT/RDAP
+  down, per-record DNS timeouts) are informational findings rather than scan
+  failures; `--offline` marks network-dependent analyzers as SKIPPED.
 
-### Changed
+### Notes
 
-- Version bumped to 1.0.0.
+- Verified end-to-end on GitHub Actions: all 11 CI jobs pass across
+  Ubuntu/Windows/macOS × Python 3.11/3.12/3.13.
 
 ## [1.0.0] - VXRecon 1.0
 
