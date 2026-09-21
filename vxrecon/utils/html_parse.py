@@ -116,7 +116,19 @@ class _VXParser(HTMLParser):
         if not text:
             return
         if self._in_title:
+            # html.parser treats <title> as CDATA: an unclosed title swallows
+            # following markup into a single data chunk, and the exact chunking
+            # differs across Python versions/platforms. If markup leaked into
+            # the data, keep only the leading text and stop; otherwise append
+            # normally (legitimate titles have no embedded tags).
+            if "<" in text:
+                cleaned = _strip_tags(text)
+                if cleaned:
+                    self.facts.title = (self.facts.title + " " + cleaned).strip()
+                self._in_title = False
+                return
             self.facts.title = (self.facts.title + " " + text).strip()
+            return
         if self._collect_text and len(self.facts.body_text_sample) < 1000:
             self.facts.body_text_sample += text + " "
 
@@ -128,6 +140,14 @@ class _VXParser(HTMLParser):
         self.facts.meta[key.lower()] = content
         if key.lower() == "generator":
             self.facts.generator = content
+
+
+def _strip_tags(text: str) -> str:
+    """Return the text before any embedded tag (used for malformed titles)."""
+
+    import re
+
+    return re.split(r"<", text, maxsplit=1)[0].strip()
 
 
 def parse_page(html: str, limit: int = 2_000_000) -> PageFacts:
