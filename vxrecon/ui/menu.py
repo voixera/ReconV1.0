@@ -52,7 +52,7 @@ def run_shell(ctx: RunContext) -> int:
 
     while True:
         try:
-            raw = input(theme.color("vxrecon > ", "cyan", "bold")).strip()
+            raw = input(theme.color("vxrecon > ", "spring", "bold")).strip()
         except (EOFError, KeyboardInterrupt):
             print()
             return 0

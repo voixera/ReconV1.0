@@ -27,10 +27,10 @@ def render_banner(theme: Theme | None = None) -> str:
 
 def _unicode_banner(theme: Theme) -> str:
     lines = [
-        "╔" + "═" * _WIDTH + "╗",
+        theme.color("╔" + "═" * _WIDTH + "╗", "dim_green"),
         _urow("VXRECON", theme),
         _urow("PASSIVE OSINT INTELLIGENCE FRAMEWORK", theme, dim=True),
-        "╚" + "═" * _WIDTH + "╝",
+        theme.color("╚" + "═" * _WIDTH + "╝", "dim_green"),
         "  " + theme.color(f"v{__version__}", "grey"),
     ]
     return "\n".join(lines)
@@ -38,23 +38,23 @@ def _unicode_banner(theme: Theme) -> str:
 
 def _ascii_banner(theme: Theme) -> str:
     lines = [
-        "+" + "=" * _WIDTH + "+",
+        theme.color("+" + "=" * _WIDTH + "+", "dim_green"),
         _arow("VXRECON", theme),
         _arow("PASSIVE OSINT INTELLIGENCE FRAMEWORK", theme, dim=True),
-        "+" + "=" * _WIDTH + "+",
+        theme.color("+" + "=" * _WIDTH + "+", "dim_green"),
         "  " + theme.color(f"v{__version__}", "grey"),
     ]
     return "\n".join(lines)
 
 
 def _urow(text: str, theme: Theme, dim: bool = False) -> str:
-    styles = ("grey",) if dim else ("bold", "cyan")
-    return "║" + theme.color(text.center(_WIDTH), *styles) + "║"
+    styles = ("grey",) if dim else ("bright_green", "bold")
+    return theme.color("║", "dim_green") + theme.color(text.center(_WIDTH), *styles) + theme.color("║", "dim_green")
 
 
 def _arow(text: str, theme: Theme, dim: bool = False) -> str:
-    styles = ("grey",) if dim else ("bold", "cyan")
-    return "|" + theme.color(text.center(_WIDTH), *styles) + "|"
+    styles = ("grey",) if dim else ("bright_green", "bold")
+    return theme.color("|", "dim_green") + theme.color(text.center(_WIDTH), *styles) + theme.color("|", "dim_green")
 
 
 MENU_ITEMS = [
@@ -81,6 +81,6 @@ def render_menu(theme: Theme | None = None) -> str:
     width = max(len(label) for _, _, label in MENU_ITEMS) + 6
     rows: list[str] = []
     for num, _cmd, label in MENU_ITEMS:
-        left = theme.color(f"[{num.rjust(2)}]", "cyan")
+        left = theme.color(f"[{num.rjust(2)}]", "spring", "bold")
         rows.append(f"{left} {label.ljust(width)}")
     return "\n".join(rows)

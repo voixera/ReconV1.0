@@ -24,7 +24,17 @@ _CODES = {
     "cyan": "\x1b[36m",
     "white": "\x1b[37m",
     "grey": "\x1b[90m",
+    # 256-color bright variants for a cleaner green-accented theme.
+    "bright_green": "\x1b[38;5;46m",
+    "lime": "\x1b[38;5;118m",
+    "spring": "\x1b[38;5;48m",
+    "teal": "\x1b[38;5;44m",
+    "dim_green": "\x1b[38;5;28m",
 }
+
+# The VXRecon accent color. Green, per the project's visual identity.
+ACCENT = "spring"
+ACCENT_STRONG = "bright_green"
 
 # Status glyphs use plain ASCII so output survives copy/paste and log files.
 GLYPHS = {
@@ -59,18 +69,23 @@ class Theme:
     def glyph(self, name: str, label: str, style: str = "bold") -> str:
         symbol = GLYPHS.get(name, "[*]")
         color_name = {
-            "ok": "green",
+            "ok": "bright_green",
             "warn": "yellow",
             "err": "red",
-            "info": "cyan",
+            "info": "spring",
             "skip": "grey",
-        }.get(name, "cyan")
+        }.get(name, "spring")
         return f"{self.color(symbol, color_name, style)} {label}"
+
+    def accent(self, text: str, *, strong: bool = False) -> str:
+        """Render ``text`` in the project accent color (green)."""
+
+        return self.color(text, ACCENT_STRONG if strong else ACCENT, "bold")
 
     def divider(self, width: int = 60, char: str = "─") -> str:
         if not self.unicode and char == "─":
             char = "-"
-        return self.color(char * width, "grey")
+        return self.color(char * width, "dim_green")
 
     def rule(self, width: int = 56) -> str:
         """Return horizontal rule characters for framed banners."""

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Callable
 
 from vxrecon.core.context import RunContext
 from vxrecon.core.logging import get_logger
@@ -81,6 +81,12 @@ class Pipeline:
         self.ctx = ctx
         # Optional per-kind allow-list of module names. ``None`` means "all".
         self.select: dict[str, set[str] | None] = {"collector": None, "analyzer": None, "correlator": None}
+        # Optional progress hooks. ``on_start`` is called before a module runs;
+        # ``on_finish`` is called with the resulting ModuleOutcome. They are
+        # intentionally side-effect-free with respect to the pipeline so the UI
+        # layer can render progress without affecting execution.
+        self.on_start: Callable[[str, str], None] | None = None
+        self.on_finish: Callable[[ModuleOutcome], None] | None = None
 
     def _names(self, kind: str) -> list[str]:
         allow = self.select.get(kind)
@@ -88,6 +94,14 @@ class Pipeline:
         if allow is not None:
             names = [n for n in names if n in allow]
         return names
+
+    def _start(self, kind: str, name: str) -> None:
+        if self.on_start is not None:
+            self.on_start(kind, name)
+
+    def _finish(self, outcome: ModuleOutcome) -> None:
+        if self.on_finish is not None:
+            self.on_finish(outcome)
 
     def run(self, target: str) -> PipelineReport:
         """Run the full collector -> analyzer -> correlator flow."""
@@ -98,7 +112,9 @@ class Pipeline:
 
         raw_outputs: dict[str, Any] = {}
         for spec in collectors:
+            self._start("collector", spec.name)
             outcome, raw = self._run_collector(spec, target)
+            self._finish(outcome)
             report.outcomes.append(outcome)
             if raw is not None:
                 raw_outputs[spec.name] = raw
@@ -106,7 +122,9 @@ class Pipeline:
         analyzers = self.registry.resolve_order("analyzer", self._names("analyzer"))
         findings_by_analyzer: dict[str, ScanResult] = {}
         for spec in analyzers:
+            self._start("analyzer", spec.name)
             outcome, result = self._run_analyzer(spec, target, raw_outputs)
+            self._finish(outcome)
             report.outcomes.append(outcome)
             if result is not None:
                 findings_by_analyzer[spec.name] = result
@@ -114,7 +132,9 @@ class Pipeline:
         correlators = self.registry.resolve_order("correlator", self._names("correlator"))
         results = list(findings_by_analyzer.values())
         for spec in correlators:
+            self._start("correlator", spec.name)
             outcome, _ = self._run_correlator(spec, target, results)
+            self._finish(outcome)
             report.outcomes.append(outcome)
 
         report.finished_at = time.time()

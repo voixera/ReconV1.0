@@ -468,14 +468,27 @@ def _run_recon(action: str, ctx: RunContext) -> int:
     if selection:
         pipeline.select = selection
 
+    # Live progress: spin while a module runs, resolve to a status line.
+    # The UI never affects execution — hooks are pure side-effects.
+    def _on_start(kind: str, name: str) -> None:
+        if kind != "correlator":
+            ui.spin(f"{kind}:{name}")
+
+    def _on_finish(outcome) -> None:
+        if outcome.kind == "correlator":
+            return
+        ui.stop_spin()
+        ui.step(f"{outcome.kind}:{outcome.name}", outcome.status, outcome.error or "")
+
+    pipeline.on_start = _on_start
+    pipeline.on_finish = _on_finish
+
     # Progress hook: report each module as it completes.
     report = pipeline.run(target)
+    ui.stop_spin()
 
     findings = 0
     for outcome in report.outcomes:
-        if outcome.kind == "correlator":
-            continue
-        ui.step(f"{outcome.kind}:{outcome.name}", outcome.status, outcome.error or "")
         if isinstance(outcome.output, ScanResult):
             findings += len(outcome.output.findings)
         if outcome.status is Status.FAILED and outcome.error:

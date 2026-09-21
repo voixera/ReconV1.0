@@ -49,7 +49,7 @@ class TerminalReporter(BaseReporter):
                 continue
             title = _MODULE_TITLES.get(module, module.upper())
             lines.append("")
-            lines.append(theme.color(title, "bold", "white"))
+            lines.append(theme.accent(title, strong=True))
             lines.append(theme.divider(len(title)))
             for finding in findings:
                 lines.extend(self._render_finding(finding, theme))
@@ -61,7 +61,7 @@ class TerminalReporter(BaseReporter):
         graph = data.get("graph")
         if graph and graph.get("edges"):
             lines.append("")
-            lines.append(theme.color("INFRASTRUCTURE GRAPH", "bold", "white"))
+            lines.append(theme.accent("INFRASTRUCTURE GRAPH", strong=True))
             lines.append(theme.divider(20))
             for edge in graph["edges"]:
                 lines.append(self._render_edge(edge, theme))
@@ -73,7 +73,7 @@ class TerminalReporter(BaseReporter):
         value = finding.get("value")
         confidence = str(finding.get("confidence", "MEDIUM"))
         badge = theme.color(f"[{confidence}]", _CONFIDENCE_STYLE.get(confidence, "grey"))
-        line = f"  {badge} {theme.color(key, 'cyan')} = {_stringify(value)}"
+        line = f"  {badge} {theme.color(key, 'teal')} = {_stringify(value)}"
         out = [line]
         for ev in finding.get("evidence", []):
             out.append("        " + theme.color(f"- {ev}", "grey"))
