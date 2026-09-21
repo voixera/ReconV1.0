@@ -340,6 +340,22 @@ Interactive menu:
 vxrecon
 ```
 
+Inside the menu, the pattern is **`<number> <target>`** on one line, or a
+command with its target. If you pick a number without a target, VXRecon prompts
+for it (type `cancel` to go back).
+
+```text
+vxrecon > 1 example.com        # 1 = recon, target = example.com
+vxrecon > 3 example.com        # 3 = DNS
+vxrecon > dns example.com      # same thing, by command name
+vxrecon > 15                   # database (no target needed)
+vxrecon > help                 # show the menu
+vxrecon > exit                 # quit
+```
+
+> **Tip:** the command mode below is usually faster for repeat work — it runs a
+> single action and exits, so it is scriptable and automation-friendly.
+
 Command mode (identical in PowerShell, Command Prompt and any terminal):
 
 ```text
