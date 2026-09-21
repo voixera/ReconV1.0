@@ -61,18 +61,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Ensure only utils/net.py imports network modules
+      - name: Ensure only approved modules import network-capable libraries
         shell: bash
         run: |
-          # Only the gateway may import socket/urllib/http.client/ssl directly.
-          offenders=$(grep -rEl "import (socket|urllib|http\.client|ssl)|from (socket|urllib|http\.client|ssl)" \
-            vxrecon --include="*.py" \
-            | grep -v "vxrecon/utils/net.py" \
-            | grep -v "vxrecon/utils/dns_util.py" \
-            | grep -v "vxrecon/collectors/tls_collector.py" \
+          # Modules allowed to touch sockets / raw TLS / raw HTTP:
+          #   - utils/net.py        : the single HTTP gateway
+          #   - utils/dns_util.py   : DNS resolver (uses dnspython/socket)
+          #   - collectors/tls_collector.py : TLS handshake for cert inspection
+          # NOTE: urllib.parse is pure string handling and is NOT a network
+          # capability, so it is deliberately excluded from this check.
+          pattern='import (socket|ssl|http\.client)|import urllib\.request|from (socket|http\.client)|from urllib\.request|from ssl'
+          offenders=$(grep -rEl "$pattern" vxrecon --include="*.py" \
+            | grep -vE "vxrecon/utils/net\.py|vxrecon/utils/dns_util\.py|vxrecon/collectors/tls_collector\.py" \
             || true)
           if [ -n "$offenders" ]; then
-            echo "Network imports found outside the allowed gateways:"
+            echo "::error::Network-capable imports found outside the approved gateways:"
             echo "$offenders"
             exit 1
           fi

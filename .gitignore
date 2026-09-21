@@ -1,10 +1,12 @@
 # Ignore VXRecon local workspaces and build artifacts.
-.vxrecon/
-reports/
-cases/
-*.db
-*.db-wal
-*.db-shm
+# NOTE: these are anchored to the repository root (/...) so they do NOT
+# accidentally ignore source packages such as vxrecon/cases/.
+/.vxrecon/
+/reports/
+/cases/
+/*.db
+/*.db-wal
+/*.db-shm
 
 # Python
 __pycache__/
