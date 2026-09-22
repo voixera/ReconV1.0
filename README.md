@@ -3,22 +3,16 @@
 **Advanced Passive OSINT & Digital Footprint Intelligence Framework**
 
 [![CI](https://github.com/voixera/ReconV1.0/actions/workflows/ci.yml/badge.svg)](https://github.com/voixera/ReconV1.0/actions/workflows/ci.yml)
-[![npm package](https://img.shields.io/badge/npm-vxrecon-CB3837.svg)](https://www.npmjs.com/package/vxrecon)
-[![npx](https://img.shields.io/badge/npx-vxrecon-informational.svg)](#npm--npx-no-clone-needed)
-[![PyPI](https://img.shields.io/badge/pypi-coming%20soon-inactive.svg)](https://pypi.org/project/vxrecon/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](#installation)
 
-<!--
-  Once published to npm you can switch to live registry badges (they render
-  green automatically after `npm publish`):
-  [![npm version](https://img.shields.io/npm/v/vxrecon.svg)](https://www.npmjs.com/package/vxrecon)
-  [![npm downloads](https://img.shields.io/npm/dm/vxrecon.svg)](https://www.npmjs.com/package/vxrecon)
--->
-
-- **npm / npx:** [npmjs.com/package/vxrecon](https://www.npmjs.com/package/vxrecon) — `npx vxrecon <action>`
-- **PyPI / pip:** `pip install vxrecon` (publishing soon)
+- **Install:** `pip install -e .` — see [Installation](#installation)
 - **GitHub:** [github.com/voixera/ReconV1.0](https://github.com/voixera/ReconV1.0)
+
+> An npm wrapper is included in the repo (`package.json`, `npm/cli.js`) so the
+> tool can be published to npm later and run via `npx vxrecon`. It is **not yet
+> published** to the npm registry.
 
 VXRecon is a privacy-first, API-key-free, passive reconnaissance framework that
 runs entirely on your own machine. It builds a local intelligence database of
@@ -85,42 +79,48 @@ All 20 features are implemented across Phases 1-9. See
 
 ---
 
-### npm / npx (no clone needed)
+### npm / npx (wrapper included, not yet published)
 
-VXRecon ships an **npm wrapper** so you can run it exactly like any Node CLI.
-The wrapper only launches the local Python process — it performs no network I/O
-of its own.
+The repository includes an **npm wrapper** (`package.json` + `npm/cli.js`) so
+the tool can be published to npm and run like any Node CLI. The wrapper only
+launches the local Python process — it performs no network I/O of its own.
 
-- **npm registry page:** https://www.npmjs.com/package/vxrecon
-- **Package name:** `vxrecon`
+> **Status: not published to the npm registry yet.** The commands below work
+> once the package is published. Until then, run the wrapper directly from a
+> checkout (see the last block) or use the pip/git installation.
 
-**Run without installing (npx):**
+**After publishing — run without installing (npx):**
 
 ```powershell
-# PowerShell / Command Prompt / any terminal
 npx vxrecon doctor
 npx vxrecon dns example.com
 npx vxrecon recon example.com --json
 ```
 
-**Install globally (npm -g):**
+**After publishing — install globally (npm -g):**
 
 ```powershell
 npm install -g vxrecon
 vxrecon doctor
 ```
 
-**Command Prompt is identical:**
+**Right now — run the wrapper from the checkout (no publish needed):**
 
-```bat
-npx vxrecon doctor
-npm install -g vxrecon
-vxrecon version
+```powershell
+# PowerShell
+node .\npm\cli.js doctor
+node .\npm\cli.js dns example.com
 ```
 
-> Requirements: Node.js 16+ **and** Python 3.11+ on PATH. The npm wrapper finds
-> Python automatically and forwards all arguments to the VXRecon CLI. It never
-> installs Python packages or mutates global state.
+```bat
+:: Command Prompt
+node npm\cli.js doctor
+node npm\cli.js dns example.com
+```
+
+> To publish it yourself: `npm login` then `npm publish --access public`
+> (or run the included `.\publish.ps1`). Requirements: Node.js 16+ **and**
+> Python 3.11+ on PATH.
 
 ---
 
@@ -328,22 +328,23 @@ dependencies, workspace paths). If every line shows `OK`, you are ready.
 
 ### Install from PyPI, pipx or npm (when published)
 
-The same tool installs like any Python package, and (via the bundled wrapper)
-like any npm package.
+Once published, the same tool installs like any Python package, and (via the
+bundled wrapper) like any npm package. **Neither PyPI nor npm is published
+yet** — use the git/pip editable install above for now.
 
 **PowerShell:**
 
 ```powershell
-# pip (PyPI)
+# pip (PyPI) — after publishing
 python -m pip install vxrecon
 
-# pipx (isolated, like npm -g)
+# pipx (isolated, like npm -g) — after publishing
 pipx install vxrecon
 
-# npm (wrapper that runs the Python CLI)
+# npm (wrapper that runs the Python CLI) — after publishing
 npm install -g vxrecon
 
-# npx (no install)
+# npx (no install) — after publishing
 npx vxrecon doctor
 ```
 
@@ -356,7 +357,8 @@ npm install -g vxrecon
 npx vxrecon doctor
 ```
 
-> npm registry: https://www.npmjs.com/package/vxrecon
+> Planned registry pages: https://www.npmjs.com/package/vxrecon and
+> https://pypi.org/project/vxrecon/
 
 ---
 
@@ -366,10 +368,10 @@ npx vxrecon doctor
 
 ```powershell
 python -m pip install -e . --upgrade     # upgrade an editable install
-python -m pip install vxrecon --upgrade  # upgrade from PyPI
-npm update -g vxrecon                    # upgrade the npm wrapper
+python -m pip install vxrecon --upgrade  # upgrade from PyPI (when published)
+npm update -g vxrecon                    # upgrade the npm wrapper (when published)
 python -m pip uninstall vxrecon          # remove the console script
-npm uninstall -g vxrecon                 # remove the npm wrapper
+npm uninstall -g vxrecon                 # remove the npm wrapper (when published)
 ```
 
 **Command Prompt:**
@@ -406,13 +408,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1
 
 ## Usage
 
-Once installed (`pip install -e .`, `pip install vxrecon`, or
-`npm install -g vxrecon`), the `vxrecon` command is available in both
-PowerShell and Command Prompt. With npm you can also run it without installing:
-
-```text
-npx vxrecon <action> [target]
-```
+Once installed (`pip install -e .`), the `vxrecon` command is available in both
+PowerShell and Command Prompt. (Once published, npm users can also use
+`npm install -g vxrecon` or `npx vxrecon`; until then run the wrapper from a
+checkout with `node npm/cli.js <action>`.)
 
 Interactive menu:
 
