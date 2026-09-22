@@ -1,0 +1,53 @@
+{
+  "name": "vxrecon",
+  "version": "1.0.0",
+  "description": "Advanced Passive OSINT & Digital Footprint Intelligence Framework (npm wrapper for the Python CLI)",
+  "keywords": [
+    "osint",
+    "reconnaissance",
+    "security",
+    "passive",
+    "footprint",
+    "privacy",
+    "dns",
+    "tls",
+    "cli"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/voixera/ReconV1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voixera/ReconV1.0.git"
+  },
+  "bugs": {
+    "url": "https://github.com/voixera/ReconV1.0/issues"
+  },
+  "bin": {
+    "vxrecon": "npm/cli.js"
+  },
+  "files": [
+    "npm/",
+    "vxrecon.py",
+    "vxrecon/",
+    "pyproject.toml",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "preferGlobal": true,
+  "scripts": {
+    "test": "node npm/cli.js version"
+  },
+  "os": [
+    "win32",
+    "darwin",
+    "linux"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
+  "author": "VXRecon Contributors"
+}

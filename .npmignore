@@ -1,0 +1,40 @@
+# Files excluded from the npm package.
+# The Python build artifacts, tests and local workspace are not needed by
+# consumers of the npm wrapper.
+
+# Python caches / build artifacts
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.egg-info/
+*.egg-info/
+build/
+dist/
+
+# Development and repository files
+tests/
+docs/
+.github/
+.venv/
+venv/
+.vxrecon/
+reports/
+cases/
+
+# Local databases and workspace
+*.db
+*.db-wal
+*.db-shm
+
+# Dev launchers not needed by npm consumers
+install.ps1
+vxrecon.ps1
+vxrecon.cmd
+
+# Docs beyond the README
+CONTRIBUTING.md
+SECURITY.md
+CHANGELOG.md
+.editorconfig
+.gitignore
+.npmignore

@@ -2,6 +2,16 @@
 
 **Advanced Passive OSINT & Digital Footprint Intelligence Framework**
 
+[![CI](https://github.com/voixera/ReconV1.0/actions/workflows/ci.yml/badge.svg)](https://github.com/voixera/ReconV1.0/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/vxrecon.svg)](https://www.npmjs.com/package/vxrecon)
+[![npm downloads](https://img.shields.io/npm/dm/vxrecon.svg)](https://www.npmjs.com/package/vxrecon)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
+
+- **npm / npx:** [npmjs.com/package/vxrecon](https://www.npmjs.com/package/vxrecon) — `npx vxrecon <action>`
+- **PyPI / pip:** `pip install vxrecon`
+- **GitHub:** [github.com/voixera/ReconV1.0](https://github.com/voixera/ReconV1.0)
+
 VXRecon is a privacy-first, API-key-free, passive reconnaissance framework that
 runs entirely on your own machine. It builds a local intelligence database of
 digital footprints using public protocols (DNS, RDAP, HTTP, TLS) and public
@@ -59,10 +69,50 @@ All 20 features are implemented across Phases 1-9. See
   Verify with `python --version`. If `python` is not found on Windows, install
   from https://www.python.org/downloads/ and tick **"Add python.exe to PATH"**.
 - **Git** (only needed for the "source checkout" method).
+- **Node.js 16+** (only needed for the `npm`/`npx` method).
 - No API keys, accounts, or cloud services are required.
 
 > All commands below are given for both **PowerShell** and **Command Prompt
 > (cmd.exe)**. Run them in the shell of your choice.
+
+---
+
+### npm / npx (no clone needed)
+
+VXRecon ships an **npm wrapper** so you can run it exactly like any Node CLI.
+The wrapper only launches the local Python process — it performs no network I/O
+of its own.
+
+- **npm registry page:** https://www.npmjs.com/package/vxrecon
+- **Package name:** `vxrecon`
+
+**Run without installing (npx):**
+
+```powershell
+# PowerShell / Command Prompt / any terminal
+npx vxrecon doctor
+npx vxrecon dns example.com
+npx vxrecon recon example.com --json
+```
+
+**Install globally (npm -g):**
+
+```powershell
+npm install -g vxrecon
+vxrecon doctor
+```
+
+**Command Prompt is identical:**
+
+```bat
+npx vxrecon doctor
+npm install -g vxrecon
+vxrecon version
+```
+
+> Requirements: Node.js 16+ **and** Python 3.11+ on PATH. The npm wrapper finds
+> Python automatically and forwards all arguments to the VXRecon CLI. It never
+> installs Python packages or mutates global state.
 
 ---
 
@@ -268,16 +318,25 @@ dependencies, workspace paths). If every line shows `OK`, you are ready.
 
 ---
 
-### Install from PyPI / pipx (when published)
+### Install from PyPI, pipx or npm (when published)
 
-Once published, the same tool installs like any Python package.
+The same tool installs like any Python package, and (via the bundled wrapper)
+like any npm package.
 
 **PowerShell:**
 
 ```powershell
+# pip (PyPI)
 python -m pip install vxrecon
-# or, isolated like npm -g:
+
+# pipx (isolated, like npm -g)
 pipx install vxrecon
+
+# npm (wrapper that runs the Python CLI)
+npm install -g vxrecon
+
+# npx (no install)
+npx vxrecon doctor
 ```
 
 **Command Prompt:**
@@ -285,7 +344,11 @@ pipx install vxrecon
 ```bat
 python -m pip install vxrecon
 pipx install vxrecon
+npm install -g vxrecon
+npx vxrecon doctor
 ```
+
+> npm registry: https://www.npmjs.com/package/vxrecon
 
 ---
 
@@ -295,14 +358,20 @@ pipx install vxrecon
 
 ```powershell
 python -m pip install -e . --upgrade     # upgrade an editable install
+python -m pip install vxrecon --upgrade  # upgrade from PyPI
+npm update -g vxrecon                    # upgrade the npm wrapper
 python -m pip uninstall vxrecon          # remove the console script
+npm uninstall -g vxrecon                 # remove the npm wrapper
 ```
 
 **Command Prompt:**
 
 ```bat
 python -m pip install -e . --upgrade
+python -m pip install vxrecon --upgrade
+npm update -g vxrecon
 python -m pip uninstall vxrecon
+npm uninstall -g vxrecon
 ```
 
 ---
@@ -329,8 +398,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1
 
 ## Usage
 
-Once installed (`pip install -e .`), the `vxrecon` command is available in both
-PowerShell and Command Prompt.
+Once installed (`pip install -e .`, `pip install vxrecon`, or
+`npm install -g vxrecon`), the `vxrecon` command is available in both
+PowerShell and Command Prompt. With npm you can also run it without installing:
+
+```text
+npx vxrecon <action> [target]
+```
 
 Interactive menu:
 
