@@ -4,8 +4,7 @@
     Install VXRecon so `vxrecon` (and the `vx` alias) work from anywhere.
 
 .DESCRIPTION
-    A tiny, transparent installer - the PowerShell equivalent of
-    `npm install -g`. It:
+    A tiny, transparent installer. It:
 
       1. Finds a Python >= 3.11 interpreter.
       2. Performs an editable install (`pip install -e .`) so the `vxrecon`

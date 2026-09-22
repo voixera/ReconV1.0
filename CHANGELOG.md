@@ -157,7 +157,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Per-action module selection for `recon`, `domain`, `dns`, `cert`, `email`,
   `compare`.
 - PowerShell launcher (`vxrecon.ps1`, `vxrecon.cmd`) and `install.ps1` so
-  VXRecon runs like `npx`/`npm -g` without manual `python vxrecon.py`.
+  VXRecon runs without manual `python vxrecon.py` invocation.
 
 ### Fixed
 

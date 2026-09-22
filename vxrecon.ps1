@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    VXRecon launcher - run VXRecon like `npx vxrecon` from a source checkout.
+    VXRecon launcher - run VXRecon from a source checkout without installing.
 
 .DESCRIPTION
     Locates a suitable Python interpreter, verifies the package imports, then
