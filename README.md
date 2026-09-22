@@ -3,13 +3,21 @@
 **Advanced Passive OSINT & Digital Footprint Intelligence Framework**
 
 [![CI](https://github.com/voixera/ReconV1.0/actions/workflows/ci.yml/badge.svg)](https://github.com/voixera/ReconV1.0/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/vxrecon.svg)](https://www.npmjs.com/package/vxrecon)
-[![npm downloads](https://img.shields.io/npm/dm/vxrecon.svg)](https://www.npmjs.com/package/vxrecon)
+[![npm package](https://img.shields.io/badge/npm-vxrecon-CB3837.svg)](https://www.npmjs.com/package/vxrecon)
+[![npx](https://img.shields.io/badge/npx-vxrecon-informational.svg)](#npm--npx-no-clone-needed)
+[![PyPI](https://img.shields.io/badge/pypi-coming%20soon-inactive.svg)](https://pypi.org/project/vxrecon/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 
+<!--
+  Once published to npm you can switch to live registry badges (they render
+  green automatically after `npm publish`):
+  [![npm version](https://img.shields.io/npm/v/vxrecon.svg)](https://www.npmjs.com/package/vxrecon)
+  [![npm downloads](https://img.shields.io/npm/dm/vxrecon.svg)](https://www.npmjs.com/package/vxrecon)
+-->
+
 - **npm / npx:** [npmjs.com/package/vxrecon](https://www.npmjs.com/package/vxrecon) — `npx vxrecon <action>`
-- **PyPI / pip:** `pip install vxrecon`
+- **PyPI / pip:** `pip install vxrecon` (publishing soon)
 - **GitHub:** [github.com/voixera/ReconV1.0](https://github.com/voixera/ReconV1.0)
 
 VXRecon is a privacy-first, API-key-free, passive reconnaissance framework that
