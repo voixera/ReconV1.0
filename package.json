@@ -28,7 +28,11 @@
   "files": [
     "npm/",
     "vxrecon.py",
-    "vxrecon/",
+    "vxrecon/**/*.py",
+    "vxrecon/**/*.sql",
+    "vxrecon/**/*.json",
+    "!vxrecon/**/__pycache__/",
+    "!vxrecon/**/*.pyc",
     "pyproject.toml",
     "README.md",
     "LICENSE"

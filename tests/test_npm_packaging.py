@@ -43,7 +43,9 @@ def test_npm_files_include_source_and_wrapper() -> None:
     files = pkg["files"]
     assert "npm/" in files
     assert "vxrecon.py" in files
-    assert "vxrecon/" in files
+    # Source files are included via globs, and caches are excluded.
+    assert any(f.startswith("vxrecon/") for f in files)
+    assert any(f.startswith("!vxrecon/") and "__pycache__" in f for f in files)
 
 
 def test_npmignore_excludes_caches_and_tests() -> None:
